@@ -19,10 +19,10 @@ class Todo {
       return;
     }
     for (let i in this.todoItems) {
-      var liElement = this.createElement("li");
-      var deleteElement = this.createElement("button");
-      var checkBoxElement = this.createElement("input");
-      var spanELement = this.createElement("span");
+      const liElement = this.createElement("li");
+      const deleteElement = this.createElement("button");
+      const checkBoxElement = this.createElement("input");
+      const spanELement = this.createElement("span");
 
       // list element
       spanELement.setAttribute("class", "listText");
@@ -65,7 +65,7 @@ class Todo {
   };
 
   onCheckboxSelect = (e) => {
-    var checkedElem = document.getElementsByClassName("listText")[
+    const checkedElem = document.getElementsByClassName("listText")[
       e.target.index
     ];
     if (e.target.checked) {
@@ -82,7 +82,7 @@ class Todo {
   };
 }
 
-var todoItems = [
+const todoItems = [
   { task: "Hit the Gym", completed: false },
   { task: "Pay bills", completed: false },
   { task: "Meet George", completed: false },
@@ -91,6 +91,6 @@ var todoItems = [
   { task: "Organize Office", completed: false },
 ];
 
-var todos = new Todo(todoItems);
+const todos = new Todo(todoItems);
 
 todos.listTodos();
