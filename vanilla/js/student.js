@@ -3,9 +3,13 @@ class Todo {
     this.todoItems = todoItems;
     this.ulElement = document.getElementById("todo_list");
     this.addElement = document.getElementById("addTodo");
+    this.timeElement = document.getElementById("todo_time");
+    this.dateElement = document.getElementById("todo_date");
     this.emptyTodo = this.createElement("h2");
-    this.emptyTodo.innerHTML = 'Please add Todo\'s';
-    this.emptyTodo.setAttribute('class','emptyTodo text_center');
+    this.emptyTodo.innerHTML = "Please add Todo's";
+    this.emptyTodo.setAttribute("class", "emptyTodo text_center");
+    this.modal = document.getElementById("myModal");
+    this.btn = document.getElementById("myBtn");
   }
 
   createElement = (item) => {
@@ -14,7 +18,7 @@ class Todo {
 
   listTodos = () => {
     this.ulElement.innerHTML = "";
-    if(this.todoItems.length < 1) {
+    if (this.todoItems.length < 1) {
       this.ulElement.appendChild(this.emptyTodo);
       return;
     }
@@ -26,7 +30,17 @@ class Todo {
 
       // list element
       spanELement.setAttribute("class", "listText");
-      spanELement.innerHTML = this.todoItems[i].task;
+
+      spanELement.innerHTML =
+        this.todoItems[i].date !== undefined ||
+        this.todoItems[i].time !== undefined
+          ? this.todoItems[i].task +
+            " " +
+            this.todoItems[i].date +
+            " " +
+            this.todoItems[i].time
+          : this.todoItems[i].task;
+
       spanELement.index = i;
       liElement.appendChild(spanELement);
       liElement.setAttribute("class", "card listItem");
@@ -54,14 +68,45 @@ class Todo {
       liElement.appendChild(checkBoxElement);
       this.ulElement.appendChild(liElement);
       liElement.appendChild(deleteElement);
-
     }
   };
 
+  convDate = date => {
+    let dateValue = date.replace(/-/g, ',');
+
+    let d = new Date(dateValue);
+    return d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
+  }
+
+  tConv24 = (time24) => {
+    let ts = time24;
+    let H = +ts.substr(0, 2);
+    let h = H % 12 || 12;
+    h = h < 10 ? "0" + h : h; // leading 0 at the left for 1 digit hours
+    const ampm = H < 12 ? " AM" : " PM";
+    ts = h + ts.substr(2, 3) + ampm;
+    return ts;
+  };
+
+  openModal = () => {
+    this.modal.style.display = "block";
+  };
+
+  closeModal = () => {
+    this.modal.style.display = "none";
+  };
+
   addTodo = () => {
-    this.todoItems.push({ task: this.addElement.value, completed: false });
+    console.log(this.timeElement.value);
+    this.todoItems.push({
+      task: this.addElement.value,
+      completed: false,
+      date: this.convDate(this.dateElement.value),
+      time: this.tConv24(this.timeElement.value),
+    });
     this.listTodos();
     this.addElement.value = "";
+    this.closeModal();
   };
 
   onCheckboxSelect = (e) => {
