@@ -10,11 +10,17 @@ class Todo {
     this.emptyTodo.setAttribute("class", "emptyTodo text_center");
     this.modal = document.getElementById("myModal");
     this.btn = document.getElementById("myBtn");
+    this.checkboxSelectAudio = new Audio('./assets/checked.mp3');
   }
 
   createElement = (item) => {
     return document.createElement(item);
   };
+
+  playAudio = (audioSrc) => {
+    let audio = audioSrc;
+    audio.play();
+  }
 
   listTodos = () => {
     this.ulElement.innerHTML = "";
@@ -68,6 +74,11 @@ class Todo {
       liElement.appendChild(checkBoxElement);
       this.ulElement.appendChild(liElement);
       liElement.appendChild(deleteElement);
+
+
+      //audio element
+
+
     }
   };
 
@@ -116,8 +127,10 @@ class Todo {
     if (e.target.checked) {
       this.todoItems[e.target.index].completed = true;
       checkedElem.style.textDecoration = "line-through";
+      this.playAudio(this.checkboxSelectAudio);
     } else {
       checkedElem.style.textDecoration = "none";
+
     }
   };
 
